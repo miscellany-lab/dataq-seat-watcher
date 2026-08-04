@@ -26,8 +26,10 @@ except ImportError:  # pragma: no cover - user-facing dependency guard
 from adsp_popup_ocr_watcher import DEFAULT_FOCUS_CLICK, DEFAULT_SEAT_BBOX, send_telegram
 
 
-BASE_DIR = Path(__file__).resolve().parent
-UI_DIR = BASE_DIR / "ui"
+SOURCE_DIR = Path(__file__).resolve().parent
+RESOURCE_DIR = Path(getattr(sys, "_MEIPASS", SOURCE_DIR))
+BASE_DIR = Path(sys.executable).resolve().parent if getattr(sys, "frozen", False) else SOURCE_DIR
+UI_DIR = RESOURCE_DIR / "ui"
 DATAQ_ACCEPT_URL = "https://www.dataq.or.kr/www/accept/list.do"
 
 
@@ -175,7 +177,10 @@ class WatcherApi:
     def _build_command(self, cfg: WatcherConfig) -> list[str]:
         cmd = [
             sys.executable,
-            "adsp_popup_ocr_watcher.py",
+            "--watcher-cli",
+        ] if getattr(sys, "frozen", False) else [
+            sys.executable,
+            str(SOURCE_DIR / "adsp_popup_ocr_watcher.py"),
             "--interval",
             str(max(10, int(cfg.interval))),
             "--pages",

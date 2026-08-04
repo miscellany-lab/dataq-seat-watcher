@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
@@ -25,3 +25,5 @@ secrets.*
 # OS
 .DS_Store
 Thumbs.db
+build/
+dist/

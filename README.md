@@ -1,4 +1,4 @@
-﻿# DataQ Seat Watcher
+# DataQ Seat Watcher
 
 DataQ 자격검정 고사장 목록 팝업을 사용자가 직접 열어둔 상태에서, 화면 OCR과 클립보드 텍스트를 함께 사용해 잔여좌석을 알려주는 Windows 로컬 보조 도구입니다.
 
@@ -49,6 +49,28 @@ Telegram을 연결하지 않아도 GUI 결과창만으로 사용할 수 있습�
 4. `시험 고사장 목록` 팝업을 엽니다.
 5. 팝업 창을 화면 맨 앞으로 둡니다.
 6. GUI에서 `감시 시작`을 누릅니다.
+
+## exe 빌드
+
+배포용 Windows exe는 PyInstaller로 생성합니다.
+
+```powershell
+python -m pip install -r requirements.txt
+python -m pip install -r requirements-build.txt
+.\scripts\build-exe.ps1 -Clean
+```
+
+빌드 결과:
+
+```text
+dist\DataQ Seat Watcher.exe
+```
+
+exe에는 Python 앱과 GUI 리소스가 포함됩니다. Tesseract OCR은 별도로 설치되어 있어야 합니다.
+
+```powershell
+winget install UB-Mannheim.TesseractOCR
+```
 
 ## CLI 실행
 
@@ -114,7 +136,7 @@ Telegram으로 전달된 휴대폰 알림 예시입니다.
 
 ## 파일 구성
 
-- `dataq_desktop_app.py`: 일반 사용자용 GUI 실행 별칭
+- `dataq_desktop_app.py`: 일반 사용자용 GUI/exe 진입점
 - `dataq_popup_ocr_watcher.py`: DataQ 팝업 OCR 감시 CLI 별칭
 - `adsp_desktop_app.py`: GUI 본체, 기존 호환 파일명 유지
 - `adsp_popup_ocr_watcher.py`: 팝업 OCR 감시 엔진, 기존 호환 파일명 유지
@@ -122,6 +144,8 @@ Telegram으로 전달된 휴대폰 알림 예시입니다.
 - `adsp_manual_clipboard_watcher.py`: 수동 클립보드 감시 도구
 - `adsp_ocr_watcher.py`: 일반 화면 OCR 감시 도구
 - `ui/`: pywebview GUI의 HTML/CSS/JS
+- `dataq_seat_watcher.spec`: PyInstaller exe 빌드 설정
+- `scripts/build-exe.ps1`: Windows exe 빌드 스크립트
 - `tests/`: ADsP 검증 사례와 DataQ 범용 파서 회귀 테스트
 
 ## 배포 전 체크리스트
